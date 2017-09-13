@@ -1,2 +1,2 @@
 export Home from './Home/Home';
-export {default as About} from './About/About';
+export About from './About/About';
