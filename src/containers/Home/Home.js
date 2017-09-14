@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Layout} from 'components'; 
 
 class Home extends Component{
   constructor(props){
@@ -11,9 +12,11 @@ class Home extends Component{
 
   render(){
     return(
-      <button>
-        Hello World
-      </button>
+      <Layout {...this.props}>
+        <div>
+          aaaaaa
+        </div>
+      </Layout>
     );
   }
 }
