@@ -3,9 +3,11 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: __dirname + '/src/index.js',
+  entry: {
+    app: './src/index.js'
+  },
   output: {
-    filename: 'bundle.js',
+    filename: 'bundle-[hash].js',
     path: path.resolve(__dirname, 'dist'),
   },
   module: {
@@ -36,7 +38,7 @@ module.exports = {
     new webpack.BannerPlugin('版权所有，翻版必究'),
     new HtmlWebpackPlugin({
         title: 'shine',
-        template: __dirname + "/src/index.tmpl.html",
+        template: path.resolve(__dirname, './src/index.tmpl.html'),
         filename: path.resolve(__dirname, './dist/index.html')
     })
   ],
