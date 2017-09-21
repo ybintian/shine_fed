@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Icon} from 'antd';
-import './TopBar.css';
+import './TopBar.scss';
 
 export default class TopBar extends Component{
   constructor(props){

@@ -1,0 +1,8 @@
+@import "../../viewvar/viewvar.scss";
+
+.sidebar{
+  top: $topbar-height;
+  position: fixed;
+  width: $sidebar-width !important;
+  height: 100%;
+}

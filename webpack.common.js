@@ -1,6 +1,12 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+
+const extractSass = new ExtractTextPlugin({
+    filename: "[name].[contenthash].css",
+    disable: process.env.NODE_ENV === "development"
+});
 
 module.exports = {
   entry: {
@@ -25,8 +31,21 @@ module.exports = {
           'style-loader',
           'css-loader'
         ]
+      },
+      {
+        test: /\.scss$/,
+        use: extractSass.extract({
+            use: [{
+                loader: "css-loader"
+            }, {
+                loader: "sass-loader"
+            }],
+            // use style-loader in development
+            fallback: "style-loader"
+        })
       }
     ]
+      
   },
   plugins: [
     new webpack.BannerPlugin('版权所有，翻版必究'),
@@ -34,7 +53,8 @@ module.exports = {
         title: 'shine',
         template: path.resolve(__dirname, './src/index.tmpl.html'),
         filename: path.resolve(__dirname, './dist/index.html')
-    })
+    }),
+    extractSass
   ],
   resolve: {
     modules: [

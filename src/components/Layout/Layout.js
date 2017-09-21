@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {TopBar,SideBar, Footer} from 'components';
-import './Layout.css';
+import './Layout.scss';
 import 'antd/dist/antd.min.css';
 
 export default class Layout extends Component{
@@ -18,7 +18,7 @@ export default class Layout extends Component{
       <div>
         <TopBar/>
         <SideBar/>
-        <div>
+        <div className='layout-content'>
           {this.props.children}
         </div>
         <Footer/>
