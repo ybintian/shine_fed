@@ -7,6 +7,7 @@ import 'antd/dist/antd.min.css';
 export default class Layout extends Component{
   static propTypes = {
     children: PropTypes.object,
+    history: PropTypes.object,
   }
 
   constructor(props){
@@ -17,7 +18,7 @@ export default class Layout extends Component{
     return(
       <div>
         <TopBar/>
-        <SideBar/>
+        <SideBar history={this.props.history}/>
         <div className='layout-content'>
           {this.props.children}
         </div>

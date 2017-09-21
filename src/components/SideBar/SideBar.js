@@ -1,4 +1,5 @@
-import React,{Component} from 'react';
+import React,{Component, PropTypes} from 'react';
+
 import { Menu, Icon, Button } from 'antd';
 
 import './SideBar.scss';
@@ -6,8 +7,17 @@ import './SideBar.scss';
 const SubMenu = Menu.SubMenu;
 
 export default class SideBar extends Component{
+  static propTypes = {
+    history: PropTypes.object,
+  }
   constructor(props){
     super(props);
+  }
+
+  onClick = (obj) => {
+    if (this.props.onClick) return this.props.onClick(obj);
+    const url = obj.keyPath.reverse().join('/');
+    this.props.history.push(url);
   }
 
   render(){
@@ -19,14 +29,15 @@ export default class SideBar extends Component{
           mode="inline"
           theme="dark"
           className='sidebar'
+          onClick={this.onClick}
         >
-          <Menu.Item key="1">
+          <Menu.Item key="/">
             <Icon type="home" />
             <span>主页</span>
           </Menu.Item>
-          <Menu.Item key="2">
+          <Menu.Item key="/about">
             <Icon type="desktop" />
-            <span>Option 2</span>
+            <span>关于</span>
           </Menu.Item>
         </Menu>
       </aside>

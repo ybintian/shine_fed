@@ -1,13 +1,16 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Layout} from 'components'; 
 
 class Home extends Component{
+  static propTypes = {
+    history: PropTypes.object,
+  };
+
   constructor(props){
     super(props);
   }
 
   componentDidMount(){
-    console.info('this is home');
   }
 
   render(){
