@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const common = require('./webpack.config.js');
+const common = require('./webpack.common.js');
 const merge = require('webpack-merge');
 
 // 要清除的路径

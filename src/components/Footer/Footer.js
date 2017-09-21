@@ -8,7 +8,7 @@ export default class Footer extends Component{
   render(){
     return(
     <div>
-      this is footer
+      <hr style={{margin: 20, color: '#eee', size: 1}}/>
     </div>);
   }
 }
