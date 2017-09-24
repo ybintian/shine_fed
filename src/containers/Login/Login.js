@@ -20,7 +20,7 @@ export class Login extends Component{
             <div className='logo-warp'>
             </div>
             
-            <Form style={{margin: '0px auto', width: 300}}>
+            <Form style={{margin: '0px auto', width: 360, padding: 30}}>
               <FormItem
                 hasFeedback
                 label='账号：'
