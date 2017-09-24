@@ -7,6 +7,7 @@ import {
 import {
   Home,
   About,
+  WrappedLogin,
 } from 'containers'
 
 const BasicExample = () => (
@@ -14,6 +15,7 @@ const BasicExample = () => (
     <Switch>
       <PrivateRoute name='Home' exact breadcrumbName='Home' path="/" component={Home}/>
       <PrivateRoute name='About' exact breadcrumbName='About' path="/about" component={About}/>
+      <PrivateRoute name='WrappedLogin' exact breadcrumbName='Login' path="/login" component={WrappedLogin}/>
     </Switch>
   </Router>
 )
