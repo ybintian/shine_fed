@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-
+import HttpClient from 'utils/HttpClient';
 
 export default class App extends Component {
   static propTypes = {
@@ -13,7 +13,22 @@ export default class App extends Component {
 
 
 
-  componentDidMount() {
+  componentDidMount(){
+    this.handleCheck();
+  }
+
+  handleCheck = () => {
+    let JsonWebToken = localStorage.getItem('JsonWebToken');
+    
+    if (JsonWebToken) {
+      HttpClient.post('/auth/check', {access_token: JsonWebToken}).then(res => {
+        if (!res.success) {
+          this.props.history.push('/login')
+        }
+      })
+    } else {
+      this.props.history.push('/login')
+    }
   }
 
   render() {

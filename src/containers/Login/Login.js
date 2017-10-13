@@ -1,5 +1,6 @@
 import React,{Component, PropTypes} from 'react';
 import {Form, Button, Checkbox, Input, Icon, Row, Col} from 'antd';
+import HttpClient from 'utils/HttpClient';
 import './Login.scss';
 
 const FormItem = Form.Item;
@@ -7,8 +8,31 @@ const createForm = Form.create;
 
 
 export class Login extends Component{
+  static propTypes = {
+    history: PropTypes.object,
+  }
+
   constructor(props){
     super(props);
+  }
+
+  componentDidMount(){
+    console.info(this.props);
+  }
+
+  handleSubmit = () => {
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+      }
+      HttpClient.post('/auth/login', {auth: values}).then(res => {
+        localStorage.setItem('JsonWebToken', res.token);
+        this.props.history.push('/');
+      }).catch(res => {
+
+      });
+    });
+    
   }
 
   render(){

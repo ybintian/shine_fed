@@ -35,6 +35,10 @@ export default class SideBar extends Component{
             <Icon type="home" />
             <span>主页</span>
           </Menu.Item>
+          <Menu.Item key="/user">
+            <Icon type="user" />
+            <span>用户</span>
+          </Menu.Item>
           <Menu.Item key="/about">
             <Icon type="desktop" />
             <span>关于</span>

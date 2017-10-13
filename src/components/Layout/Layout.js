@@ -17,7 +17,7 @@ export default class Layout extends Component{
   render(){
     return(
       <div>
-        <TopBar/>
+        <TopBar {...this.props}/>
         <SideBar history={this.props.history}/>
         <div className='layout-content'>
           {this.props.children}
