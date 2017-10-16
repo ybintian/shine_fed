@@ -1,4 +1,11 @@
-import {FETCH_STARTED, FETCH_SUCCESS, FETCH_FAILURE} from 'actionTypes/userActionTypes';
+import {
+  FETCH_STARTED,
+  FETCH_SUCCESS,
+  FETCH_FAILURE,
+  CREATE_STARTED,
+  CREATE_SUCCESS,
+  CREATE_FAILURE,
+} from 'actionTypes/userActionTypes';
 import * as Status from 'status/userStatus';
 
 export default (state = {status: Status.LOADING}, action) => {
@@ -10,6 +17,16 @@ export default (state = {status: Status.LOADING}, action) => {
       return {...state, status: Status.SUCCESS, users: action.result};
     }
     case FETCH_FAILURE: {
+      return {status: Status.FAILURE};
+    }
+    case CREATE_STARTED: {
+      return {status: Status.LOADING};
+    }
+    case CREATE_SUCCESS: {
+      console.info(4444, state, action);
+      return {...state, status: Status.SUCCESS, message: action.message};
+    }
+    case CREATE_FAILURE: {
       return {status: Status.FAILURE};
     }
     default: {
