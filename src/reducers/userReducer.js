@@ -11,14 +11,14 @@ import * as Status from 'status/userStatus';
 export default (state = {status: Status.LOADING}, action) => {
   switch(action.type) {
     case FETCH_STARTED: {
-      return {status: Status.LOADING};
+      return {listStatus: Status.LOADING};
     }
     case FETCH_SUCCESS: {
       console.info(action);
-      return {...state, status: Status.SUCCESS, records: action.result.results, pagination: action.result.pagination};
+      return {...state, listStatus: Status.SUCCESS, records: action.result.results, pagination: action.result.pagination};
     }
     case FETCH_FAILURE: {
-      return {status: Status.FAILURE};
+      return {listStatus: Status.FAILURE};
     }
     case CREATE_STARTED: {
       return {status: Status.LOADING};

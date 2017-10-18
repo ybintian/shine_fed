@@ -11,7 +11,7 @@ class User extends Component{
     history: PropTypes.object,
     getUsers: PropTypes.func,
     onCreate: PropTypes.func,
-    status: PropTypes.string,
+    listStatus: PropTypes.string,
     records: PropTypes.array,
     message: PropTypes.object,
     pagination: PropTypes.object,
@@ -53,7 +53,7 @@ class User extends Component{
   }
 
   render(){
-    const {onCreate, records, pagination} = this.props;
+    const {onCreate, records, pagination, listStatus} = this.props;
     const {formVisible} = this.state;
     console.info(1111, pagination);
     return(
@@ -67,7 +67,7 @@ class User extends Component{
           <UserForm visible={formVisible} onCreate={this.handleSave} onCancel={this.handleCancel}/>
 
           <UserList records={records} pagination={pagination} onPageChange={this.handlePageChange}
-              onShowSizeChange={this.handleShowSizeChange}/>
+              onShowSizeChange={this.handleShowSizeChange} listStatus={listStatus}/>
         </div>
       </Layout>
     );
@@ -77,7 +77,7 @@ class User extends Component{
 const mapStateTopProps = (state) => {
   console.info(state.users);
   return {
-    status: state.users.status,
+    listStatus: state.users.listStatus,
     records: state.users.records,
     pagination: state.users.pagination || {},
     message: state.users.message,
