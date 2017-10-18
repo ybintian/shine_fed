@@ -34,7 +34,7 @@ export default class UserList extends Component{
       title: 'phone',
       dataIndex: 'phone',
     }];
-    console.info(2222, pagination);
+
     const {records, pagination, listStatus} = this.props;
     const { per_page, total } = pagination;
 
@@ -44,6 +44,10 @@ export default class UserList extends Component{
     pageSizeOptions = pageSizeOptions.map(item => `${item}`);
 
     return(
+    <div className='user-list-warper'>
+      <div className='user-list-header'>
+       <h3>UserList</h3>
+      </div>
       <Table rowKey='id' columns={columns} dataSource={records} 
       loading={listStatus == 'loading'}
       pagination={{ onChange: this.handlePageChange,
@@ -52,6 +56,7 @@ export default class UserList extends Component{
         pageSize: per_page,
         total: total,
       }}/>
+    </div>
     );
   }
 }

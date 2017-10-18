@@ -3,8 +3,10 @@ import {Table, Button} from 'antd';
 import {Layout} from 'components'; 
 import {connect} from 'react-redux';
 import * as userActions from 'actions/userActions';
-
 import {UserForm, UserList} from 'components';
+
+import './user.scss';
+
 
 class User extends Component{
   static propTypes = {
@@ -65,7 +67,9 @@ class User extends Component{
             </Button>
           </div>
           <UserForm visible={formVisible} onCreate={this.handleSave} onCancel={this.handleCancel}/>
-
+          <div className='user-title-warper'>
+          <h1>用户信息</h1>
+          </div>
           <UserList records={records} pagination={pagination} onPageChange={this.handlePageChange}
               onShowSizeChange={this.handleShowSizeChange} listStatus={listStatus}/>
         </div>
