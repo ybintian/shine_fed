@@ -19,8 +19,10 @@ const createForm = Form.create;
 @createForm()
 export default class UserForm extends Component{
   static propTypes = {
+    visible: PropTypes.bool,
     record: PropTypes.object,
     onCreate: PropTypes.func,
+    handleCancel: PropTypes.func,
   }
 
   constructor(){
@@ -34,15 +36,15 @@ export default class UserForm extends Component{
         return;
       }
       this.props.onCreate({user: values});
-      console.info(1111, values);
     });
   }
 
   render(){
     const { getFieldDecorator } = this.props.form;
-
+    const {visible, onCancel} = this.props;
+    console.info(1111, visible);
     return(
-      <Modal title="用户表单" visible={true} onOk={this.handleOk}>
+      <Modal title="用户表单" visible={visible} onOk={this.handleOk} onCancel={onCancel}>
         <Form>
           <FormItem
           {...formItemLayout}

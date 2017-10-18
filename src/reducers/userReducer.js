@@ -14,7 +14,8 @@ export default (state = {status: Status.LOADING}, action) => {
       return {status: Status.LOADING};
     }
     case FETCH_SUCCESS: {
-      return {...state, status: Status.SUCCESS, users: action.result};
+      console.info(action);
+      return {...state, status: Status.SUCCESS, records: action.result.results, pagination: action.result.pagination};
     }
     case FETCH_FAILURE: {
       return {status: Status.FAILURE};

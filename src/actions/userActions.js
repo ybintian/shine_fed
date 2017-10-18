@@ -37,17 +37,17 @@ export const createUserFailure = (error) => ({
   error
 })
 
-export const fetchUser = () => {
+export const fetchUser = (params) => {
   return (dispatch) => {
     const apiUrl = `/users`;
 
     dispatch(fetchUserStarted())
 
-    return HttpClient.get(apiUrl).then((response) => {
+    return HttpClient.get(apiUrl, params).then((response) => {
       if (response.success != true) {
         throw new Error('Fail to get response with status ' + response.status);
       }
-      dispatch(fetchUserSuccess(response.results));
+      dispatch(fetchUserSuccess(response));
     }).catch((error) => {
       dispatch(fetchUserFailure(error));
     })

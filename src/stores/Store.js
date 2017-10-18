@@ -6,7 +6,7 @@ const win = window;
 
 
 const reducer = combineReducers({
-  user: userReducer
+  users: userReducer
 });
 
 const middlewares = [thunkMiddleware];

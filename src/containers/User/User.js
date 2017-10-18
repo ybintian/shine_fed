@@ -4,7 +4,7 @@ import {Layout} from 'components';
 import {connect} from 'react-redux';
 import * as userActions from 'actions/userActions';
 
-import {UserForm} from 'components';
+import {UserForm, UserList} from 'components';
 
 class User extends Component{
   static propTypes = {
@@ -12,48 +12,62 @@ class User extends Component{
     getUsers: PropTypes.func,
     onCreate: PropTypes.func,
     status: PropTypes.string,
-    users: PropTypes.array,
+    records: PropTypes.array,
     message: PropTypes.object,
+    pagination: PropTypes.object,
   }
 
   constructor(props){
     super(props);
+    this.state = {
+      formVisible: false,
+    };
   }
 
   componentDidMount(){
     this.props.getUsers();
   }
 
+  handlePageChange = (page, perPage) => {
+    return this.props.getUsers({page: page, per_page: perPage});
+  }
+
+  handleShowSizeChange = (page, perPage) => {
+    return this.props.getUsers({page: page, per_page: perPage});
+  }
+
+  handleNew = () => {
+    this.setState({
+      formVisible: true,
+    })
+  }
+
+  handleCancel = () => {
+    this.setState({
+      formVisible: false,
+    })
+  }
+
   handleSave = (record) => {
     let res = this.props.onCreate(record);
-    console.info(777777, res);
   }
 
   render(){
-    const columns = [{
-      title: 'nickname',
-      dataIndex: 'nickname',
-      render: text => <a href="#">{text}</a>,
-    }, {
-      title: 'email',
-      dataIndex: 'email',
-    }, {
-      title: 'phone',
-      dataIndex: 'phone',
-    }];
-
-    const {onCreate} = this.props;
+    const {onCreate, records, pagination} = this.props;
+    const {formVisible} = this.state;
+    console.info(1111, pagination);
     return(
       <Layout {...this.props}>
         <div>
           <div style={{height: '50px', padding: '5px'}}>
-            <Button style={{float: 'right'}}>
+            <Button style={{float: 'right'}} onClick={this.handleNew}>
                添加
             </Button>
           </div>
-          <UserForm onCreate={this.handleSave}/>
+          <UserForm visible={formVisible} onCreate={this.handleSave} onCancel={this.handleCancel}/>
 
-          <Table rowKey='id' columns={columns} dataSource={this.props.users} />
+          <UserList records={records} pagination={pagination} onPageChange={this.handlePageChange}
+              onShowSizeChange={this.handleShowSizeChange}/>
         </div>
       </Layout>
     );
@@ -61,11 +75,12 @@ class User extends Component{
 }
 
 const mapStateTopProps = (state) => {
-  console.info(33333, state.user);
+  console.info(state.users);
   return {
-    status: state.user.status,
-    users: state.user.users,
-    message: state.user.message,
+    status: state.users.status,
+    records: state.users.records,
+    pagination: state.users.pagination || {},
+    message: state.users.message,
   };
 }
 
@@ -75,7 +90,6 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(userActions.fetchUser());
     },
     onCreate: (record) => {
-      console.info(2222, userActions.createUser(record))
       dispatch(userActions.createUser(record));
     }
   }
