@@ -47,9 +47,17 @@ class User extends Component{
       this.props.getUser({user_id: record.id});
       this.setState({
         detailVisible: true,
-      })
+      });
       break;
       case 'edit':
+      this.props.getUser({user_id: record.id});
+      this.setState({
+        formAction: 'edit',
+      }, () => {
+        this.setState({
+          formVisible: true,
+        });
+      });
       break;
       case 'destroy':
       break;
@@ -57,8 +65,12 @@ class User extends Component{
   }
 
   handleNew = () => {
-    this.setState({
-      formVisible: true,
+    this.setState({      
+      formAction: 'new',
+    },() => {
+      this.setState({
+        formVisible: true,
+      })
     });
   }
 
@@ -80,7 +92,7 @@ class User extends Component{
 
   render(){
     const {onCreate, records, record, pagination, listStatus} = this.props;
-    const {formVisible, detailVisible} = this.state;
+    const {formVisible, detailVisible, formAction} = this.state;
     return(
       <Layout {...this.props}>
         <div>
@@ -89,7 +101,7 @@ class User extends Component{
                添加
             </Button>
           </div>
-          <UserForm visible={formVisible} onCreate={this.handleSave} onCancel={this.handleFormCancel}/>
+          <UserForm visible={formVisible} record={record} onCreate={this.handleSave} onCancel={this.handleFormCancel} action={formAction}/>
           <UserDetail visible={detailVisible} record={record} onCancel={this.handleDetailCancel}/>
           <div className='user-title-warper'>
           <h1>用户信息</h1>

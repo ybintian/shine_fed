@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Modal, Form, Input, Radio} from 'antd';
 import PropTypes from 'prop-types';
-
+import moment from 'moment';
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -16,9 +16,38 @@ const formItemLayout = {
 };
 
 const createForm = Form.create;
-@createForm()
+@createForm({
+  mapPropsToFields(props) {
+    const {record, action} = props;
+    let initValues = {};
+    console.info(action);
+    if (record && action == 'edit') {
+      Object.entries(record).forEach(
+        (item) => {
+          if ([
+            // date cols
+          ].indexOf(item[0]) > -1) {
+
+            initValues[item[0]] = {value: item[1] && moment(item[1])};
+          } else {
+            initValues[item[0]] = {value: item[1]};
+          }
+        }
+      );
+    }
+    return initValues;
+  },
+  onFieldsChange(props, fields) {
+    console.log('onFieldsChange', fields);
+    props.dispatch({
+      type: 'save_fields',
+      payload: fields,
+    });
+  },
+})
 export default class UserForm extends Component{
   static propTypes = {
+    action: PropTypes.string,
     visible: PropTypes.bool,
     record: PropTypes.object,
     onCreate: PropTypes.func,
