@@ -7,3 +7,4 @@ export PrivateRoute from './Router/PrivateRoute';
 //User
 export UserForm from './User/UserForm';
 export UserList from './User/UserList';
+export UserDetail from './User/UserDetail';

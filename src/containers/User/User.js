@@ -3,7 +3,7 @@ import {Table, Button} from 'antd';
 import {Layout} from 'components'; 
 import {connect} from 'react-redux';
 import * as userActions from 'actions/userActions';
-import {UserForm, UserList} from 'components';
+import {UserForm, UserList, UserDetail} from 'components';
 
 import './user.scss';
 
@@ -12,8 +12,10 @@ class User extends Component{
   static propTypes = {
     history: PropTypes.object,
     getUsers: PropTypes.func,
+    getUser: PropTypes.func,
     onCreate: PropTypes.func,
     listStatus: PropTypes.string,
+    record: PropTypes.object,
     records: PropTypes.array,
     message: PropTypes.object,
     pagination: PropTypes.object,
@@ -23,6 +25,7 @@ class User extends Component{
     super(props);
     this.state = {
       formVisible: false,
+      detailVisible: false,
     };
   }
 
@@ -35,20 +38,40 @@ class User extends Component{
   }
 
   handleShowSizeChange = (page, perPage) => {
-    console.info(2222, page, perPage);
     return this.props.getUsers({page: page, per_page: perPage});
+  }
+
+  handleRecordAction = (actionName, record) => {
+    switch(actionName){
+      case 'detail':
+      this.props.getUser({user_id: record.id});
+      this.setState({
+        detailVisible: true,
+      })
+      break;
+      case 'edit':
+      break;
+      case 'destroy':
+      break;
+    }
   }
 
   handleNew = () => {
     this.setState({
       formVisible: true,
-    })
+    });
   }
 
-  handleCancel = () => {
+  handleFormCancel = () => {
     this.setState({
       formVisible: false,
-    })
+    });
+  }
+
+  handleDetailCancel = () => {
+    this.setState({
+      detailVisible: false,
+    });
   }
 
   handleSave = (record) => {
@@ -56,8 +79,8 @@ class User extends Component{
   }
 
   render(){
-    const {onCreate, records, pagination, listStatus} = this.props;
-    const {formVisible} = this.state;
+    const {onCreate, records, record, pagination, listStatus} = this.props;
+    const {formVisible, detailVisible} = this.state;
     return(
       <Layout {...this.props}>
         <div>
@@ -66,12 +89,17 @@ class User extends Component{
                添加
             </Button>
           </div>
-          <UserForm visible={formVisible} onCreate={this.handleSave} onCancel={this.handleCancel}/>
+          <UserForm visible={formVisible} onCreate={this.handleSave} onCancel={this.handleFormCancel}/>
+          <UserDetail visible={detailVisible} record={record} onCancel={this.handleDetailCancel}/>
           <div className='user-title-warper'>
           <h1>用户信息</h1>
           </div>
-          <UserList records={records} pagination={pagination} onPageChange={this.handlePageChange}
-              onShowSizeChange={this.handleShowSizeChange} listStatus={listStatus}/>
+          <UserList records={records} 
+                    pagination={pagination} 
+                    onPageChange={this.handlePageChange}
+                    onShowSizeChange={this.handleShowSizeChange} 
+                    onRecordAction={this.handleRecordAction}
+                    listStatus={listStatus}/>
         </div>
       </Layout>
     );
@@ -79,10 +107,10 @@ class User extends Component{
 }
 
 const mapStateTopProps = (state) => {
-  console.info(state.users);
   return {
     listStatus: state.users.listStatus,
     records: state.users.records,
+    record: state.users.record,
     pagination: state.users.pagination || {},
     message: state.users.message,
   };
@@ -91,7 +119,10 @@ const mapStateTopProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getUsers: (params) => {
-      dispatch(userActions.fetchUser(params));
+      dispatch(userActions.getUsers(params));
+    },
+    getUser: (params) => {
+      dispatch(userActions.getUser(params));
     },
     onCreate: (record) => {
       dispatch(userActions.createUser(record));

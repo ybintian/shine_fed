@@ -8,6 +8,7 @@ export default class UserList extends Component{
     records: PropTypes.array,
     pagination: PropTypes.object,
     listStatus: PropTypes.string,
+    onRecordAction: PropTypes.func,
   }
 
   constructor(){
@@ -19,8 +20,11 @@ export default class UserList extends Component{
   }
 
   handleShowSizeChange = (page, perPage) => {
-    console.info(1111, page, perPage);
     this.props.onShowSizeChange && this.props.onShowSizeChange(page, perPage);
+  }
+
+  handleActionsClick = (actionName, record) => {
+    this.props.onRecordAction && this.props.onRecordAction(actionName,record);
   }
 
   render(){
@@ -31,9 +35,23 @@ export default class UserList extends Component{
     }, {
       title: 'email',
       dataIndex: 'email',
-    }, {
+    }, 
+    {
       title: 'phone',
       dataIndex: 'phone',
+    }, 
+    {
+      title: 'action',
+      key: 'operation',
+      render: (record) => {
+        return(
+          <div>
+            <a style={{margin: 5}} onClick={() => this.handleActionsClick('detail', record)}>详细</a>
+            <a style={{margin: 5}} onClick={() => this.handleActionsClick('edit', record)}>修改</a>
+            <a style={{margin: 5}} onClick={() => this.handleActionsClick('destroy', record)}>删除</a>
+          </div>
+        )
+      }
     }];
 
     const {records, pagination, listStatus} = this.props;

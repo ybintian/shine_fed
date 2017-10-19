@@ -1,7 +1,10 @@
 import {
-  FETCH_STARTED,
-  FETCH_SUCCESS,
-  FETCH_FAILURE,
+  GET_USERS_STARTED,
+  GET_USERS_SUCCESS,
+  GET_USERS_FAILURE,
+  GET_USER_STARTED,
+  GET_USER_SUCCESS,
+  GET_USER_FAILURE,
   CREATE_STARTED,
   CREATE_SUCCESS,
   CREATE_FAILURE
@@ -9,17 +12,31 @@ import {
 import {message} from 'antd';
 import HttpClient from 'utils/HttpClient';
 
-export const fetchUserStarted = () => ({
-  type: FETCH_STARTED
+export const getUsersStarted = () => ({
+  type: GET_USERS_STARTED
 });
 
-export const fetchUserSuccess = (result) => ({
-  type: FETCH_SUCCESS,
+export const getUsersSuccess = (result) => ({
+  type: GET_USERS_SUCCESS,
   result
 });
 
-export const fetchUserFailure = (error) => ({
-  type: FETCH_FAILURE,
+export const getUsersFailure = (error) => ({
+  type: GET_USERS_FAILURE,
+  error
+});
+
+export const getUserStarted = () => ({
+  type: GET_USER_STARTED
+});
+
+export const getUserSuccess = (result) => ({
+  type: GET_USER_SUCCESS,
+  result
+});
+
+export const getUserFailure = (error) => ({
+  type: GET_USER_FAILURE,
   error
 });
 
@@ -37,19 +54,35 @@ export const createUserFailure = (error) => ({
   error
 })
 
-export const fetchUser = (params) => {
+export const getUsers = (params) => {
   console.info(33333, params);
   return (dispatch) => {
     const apiUrl = `/users`;
 
-    dispatch(fetchUserStarted())
+    dispatch(getUsersStarted())
     return HttpClient.get(apiUrl, params).then((response) => {
       if (response.success != true) {
         throw new Error('Fail to get response with status ' + response.status);
       }
-      dispatch(fetchUserSuccess(response));
+      dispatch(getUsersSuccess(response));
     }).catch((error) => {
-      dispatch(fetchUserFailure(error));
+      dispatch(getUsersFailure(error));
+    })
+  };
+}
+
+export const getUser = (params) => {
+  return (dispatch) => {
+    const apiUrl = `/users/${params.user_id}`;
+
+    dispatch(getUserStarted())
+    return HttpClient.get(apiUrl, params).then((response) => {
+      if (response.success != true) {
+        throw new Error('Fail to get response with status ' + response.status);
+      }
+      dispatch(getUserSuccess(response));
+    }).catch((error) => {
+      dispatch(getUserFailure(error));
     })
   };
 }
