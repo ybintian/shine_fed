@@ -35,6 +35,7 @@ class User extends Component{
   }
 
   handleShowSizeChange = (page, perPage) => {
+    console.info(2222, page, perPage);
     return this.props.getUsers({page: page, per_page: perPage});
   }
 
@@ -57,7 +58,6 @@ class User extends Component{
   render(){
     const {onCreate, records, pagination, listStatus} = this.props;
     const {formVisible} = this.state;
-    console.info(1111, pagination);
     return(
       <Layout {...this.props}>
         <div>
@@ -90,8 +90,8 @@ const mapStateTopProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getUsers: () => {
-      dispatch(userActions.fetchUser());
+    getUsers: (params) => {
+      dispatch(userActions.fetchUser(params));
     },
     onCreate: (record) => {
       dispatch(userActions.createUser(record));

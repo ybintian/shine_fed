@@ -42,7 +42,6 @@ export default class UserForm extends Component{
   render(){
     const { getFieldDecorator } = this.props.form;
     const {visible, onCancel} = this.props;
-    console.info(1111, visible);
     return(
       <Modal title="用户表单" visible={visible} onOk={this.handleOk} onCancel={onCancel}>
         <Form>

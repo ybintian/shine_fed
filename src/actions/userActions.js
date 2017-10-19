@@ -38,11 +38,11 @@ export const createUserFailure = (error) => ({
 })
 
 export const fetchUser = (params) => {
+  console.info(33333, params);
   return (dispatch) => {
     const apiUrl = `/users`;
 
     dispatch(fetchUserStarted())
-
     return HttpClient.get(apiUrl, params).then((response) => {
       if (response.success != true) {
         throw new Error('Fail to get response with status ' + response.status);

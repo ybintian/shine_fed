@@ -19,6 +19,7 @@ export default class UserList extends Component{
   }
 
   handleShowSizeChange = (page, perPage) => {
+    console.info(1111, page, perPage);
     this.props.onShowSizeChange && this.props.onShowSizeChange(page, perPage);
   }
 
@@ -50,7 +51,9 @@ export default class UserList extends Component{
       </div>
       <Table rowKey='id' columns={columns} dataSource={records} 
       loading={listStatus == 'loading'}
-      pagination={{ onChange: this.handlePageChange,
+      pagination={{ 
+        showSizeChanger: true,
+        onChange: this.handlePageChange,
         onShowSizeChange: this.handleShowSizeChange,
         pageSizeOptions: pageSizeOptions,
         pageSize: per_page,

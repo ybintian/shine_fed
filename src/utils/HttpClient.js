@@ -19,8 +19,9 @@ function HttpRequest(url, params = {}){
     },
     withCredentials: false,
     data: objectToFormData(params.data),
+    params: params.data,
   }
-  // console.info(params.data);
+
   return new Promise((resolve, reject) => {
     axios(requestConfig).then((res) => {
       console.info(res);
