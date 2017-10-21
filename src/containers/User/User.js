@@ -16,7 +16,7 @@ class User extends Component{
     onCreate: PropTypes.func,
     listStatus: PropTypes.string,
     record: PropTypes.object,
-    records: PropTypes.array,
+    records: PropTypes.object,
     message: PropTypes.object,
     pagination: PropTypes.object,
   }
@@ -120,11 +120,10 @@ class User extends Component{
 
 const mapStateTopProps = (state) => {
   return {
-    listStatus: state.users.listStatus,
-    records: state.users.records,
-    record: state.users.record,
-    pagination: state.users.pagination || {},
-    message: state.users.message,
+    listStatus: state.users.getIn(['listStatus']),
+    records: state.users.getIn(['records']),
+    record: state.users.getIn(['record']),
+    pagination: state.users.getIn(['pagination']) || {},
   };
 }
 

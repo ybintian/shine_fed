@@ -10,37 +10,69 @@ import {
   CREATE_FAILURE,
 } from 'actionTypes/userActionTypes';
 import * as Status from 'status/userStatus';
+import Immutable from 'immutable';
 
-export default (state = {status: Status.LOADING}, action) => {
+const initialState = Immutable.fromJS({
+  listStatus: '',
+  recordStatus: '',
+  createStatus: '',
+  message: {},
+  record: {},
+  records: [],
+  pagination: {},
+});
+
+export default (state = initialState, action) => {
   switch(action.type) {
     case GET_USERS_STARTED: {
-      return {...state, listStatus: Status.LOADING};
+      return state.set({
+        listStatus: Status.LOADING
+      });
     }
     case GET_USERS_SUCCESS: {
-      console.info(action);
-      return {...state, listStatus: Status.SUCCESS, records: action.result.results, pagination: action.result.pagination};
+      return state.merge({
+        listStatus: Status.SUCCESS,
+        records: action.result.results,
+        pagination: action.result.pagination
+      });
     }
     case GET_USERS_FAILURE: {
-      return {...state, listStatus: Status.FAILURE};
+      return state.merge({
+        listStatus: Status.FAILURE
+      });
     }
     case GET_USER_STARTED: {
-      return {...state, listStatus: Status.LOADING};
+      return state.merge({
+        recordStatus: Status.FAILURE
+      });
     }
     case GET_USER_SUCCESS: {
-      console.info(action);
-      return {...state, listStatus: Status.SUCCESS, record: action.result.result};
+      return state.merge({
+        recordStatus: Status.SUCCESS, 
+        record: action.result.result
+      });
     }
     case GET_USER_FAILURE: {
-      return {...state, listStatus: Status.FAILURE};
+      return state.merge({
+        recordStatus: Status.FAILURE
+      });
     }
     case CREATE_STARTED: {
-      return {...state, status: Status.LOADING};
+      return state.merge({
+        createStatus: Status.LOADING,
+      });
     }
     case CREATE_SUCCESS: {
-      return {...state, status: Status.SUCCESS, message: action.message};
+      return state.merge({
+        createStatus: Status.SUCCESS,
+        message: action.message
+      });
     }
     case CREATE_FAILURE: {
-      return {...state, status: Status.FAILURE};
+      return state.merge({
+        createStatus: Status.FAILURE,
+        message: action.message
+      });
     }
     default: {
       return state;

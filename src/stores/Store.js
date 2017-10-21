@@ -1,7 +1,7 @@
 import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
 import thunkMiddleware from 'redux-thunk'
 import userReducer from 'reducers/userReducer';
-
+import Immutable from 'immutable';
 const win = window;
 
 

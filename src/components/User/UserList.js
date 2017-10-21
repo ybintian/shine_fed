@@ -5,7 +5,7 @@ import {Table} from 'antd';
 
 export default class UserList extends Component{
   static propTypes = {
-    records: PropTypes.array,
+    records: PropTypes.object,
     pagination: PropTypes.object,
     listStatus: PropTypes.string,
     onRecordAction: PropTypes.func,
@@ -55,19 +55,24 @@ export default class UserList extends Component{
     }];
 
     const {records, pagination, listStatus} = this.props;
-    const { per_page, total } = pagination;
-
+    const { per_page, total } = pagination.toJS();
+    
     let pageSizeOptions = [10, 20, 30, 40, 50, 80, 100, 500, 1000];
     pageSizeOptions.push(per_page);
     pageSizeOptions = _.uniq(pageSizeOptions, true);
     pageSizeOptions = pageSizeOptions.map(item => `${item}`);
+
+    const dataSource = records.map((item) => {
+      return item.toJS();
+    }).toArray();
+
 
     return(
     <div className='user-list-warper'>
       <div className='user-list-header'>
        <h3>UserList</h3>
       </div>
-      <Table rowKey='id' columns={columns} dataSource={records} 
+      <Table rowKey='id' columns={columns} dataSource={dataSource} 
       loading={listStatus == 'loading'}
       pagination={{ 
         showSizeChanger: true,
