@@ -8,17 +8,23 @@ import {
   CREATE_STARTED,
   CREATE_SUCCESS,
   CREATE_FAILURE,
+  UPDATE_STARTED,
+  UPDATE_SUCCESS,
+  UPDATE_FAILURE,
 } from 'actionTypes/userActionTypes';
 import * as Status from 'status/userStatus';
 import Immutable from 'immutable';
+import {convertArrayToRecordMap} from 'utils/Common';
+import {User} from './models.js';
 
 const initialState = Immutable.fromJS({
   listStatus: '',
   recordStatus: '',
   createStatus: '',
   message: {},
-  record: {},
-  records: [],
+  record: new User(),
+  newRecord: new User(),
+  records: new Immutable.Map(),
   pagination: {},
 });
 
@@ -32,7 +38,7 @@ export default (state = initialState, action) => {
     case GET_USERS_SUCCESS: {
       return state.merge({
         listStatus: Status.SUCCESS,
-        records: action.result.results,
+        records: convertArrayToRecordMap(action.result.results, User),
         pagination: action.result.pagination
       });
     }
@@ -73,6 +79,24 @@ export default (state = initialState, action) => {
         createStatus: Status.FAILURE,
         message: action.message
       });
+    }
+    case UPDATE_STARTED: {
+      return state.merge({
+        updateStatus: Status.LOADING,
+      });
+    }
+    case UPDATE_SUCCESS: {
+      return state.merge({
+        updateStatus: Status.SUCCESS,
+        message: action.message,
+        updateRecord: action.result,
+      });
+    }
+    case UPDATE_FAILURE: {
+     return state.merge({
+        updateStatus: Status.SUCCESS,
+        message: action.message
+      }); 
     }
     default: {
       return state;

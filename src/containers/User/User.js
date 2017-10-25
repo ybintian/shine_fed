@@ -14,9 +14,11 @@ class User extends Component{
     getUsers: PropTypes.func,
     getUser: PropTypes.func,
     onCreate: PropTypes.func,
+    onUpdate: PropTypes.func,
     listStatus: PropTypes.string,
     record: PropTypes.object,
     records: PropTypes.object,
+    newRecord: PropTypes.object,
     message: PropTypes.object,
     pagination: PropTypes.object,
   }
@@ -44,15 +46,15 @@ class User extends Component{
   handleRecordAction = (actionName, record) => {
     switch(actionName){
       case 'detail':
-      this.props.getUser({user_id: record.id});
+      this.setState({record: this.props.records.get(record.id)});
       this.setState({
         detailVisible: true,
       });
       break;
       case 'edit':
-      this.props.getUser({user_id: record.id});
       this.setState({
         formAction: 'edit',
+        record: this.props.records.get(record.id),
       }, () => {
         this.setState({
           formVisible: true,
@@ -66,7 +68,7 @@ class User extends Component{
 
   handleNew = () => {
     this.setState({      
-      formAction: 'new',
+      record: this.props.newRecord,
     },() => {
       this.setState({
         formVisible: true,
@@ -87,12 +89,20 @@ class User extends Component{
   }
 
   handleSave = (record) => {
-    let res = this.props.onCreate(record);
+    if (!this.state.record.id) {
+      let res = this.props.onCreate(record);
+    } else {
+      let res = this.props.onUpdate(Object.assign({}, {id: this.state.record.id}, record.user));
+    }
+    this.setState({
+      formVisible: false,
+    });
   }
 
   render(){
-    const {onCreate, records, record, pagination, listStatus} = this.props;
-    const {formVisible, detailVisible, formAction} = this.state;
+    const {onCreate, records, pagination, listStatus, newRecord, onUpdate} = this.props;
+    const {formVisible, detailVisible, formAction, record} = this.state;
+
     return(
       <Layout {...this.props}>
         <div>
@@ -101,7 +111,7 @@ class User extends Component{
                添加
             </Button>
           </div>
-          <UserForm visible={formVisible} record={record} onCreate={this.handleSave} onCancel={this.handleFormCancel} action={formAction}/>
+          <UserForm visible={formVisible} record={record && record.toJS()} onCreate={this.handleSave} onCancel={this.handleFormCancel} action={formAction}/>
           <UserDetail visible={detailVisible} record={record} onCancel={this.handleDetailCancel}/>
           <div className='user-title-warper'>
           <h1>用户信息</h1>
@@ -121,6 +131,7 @@ class User extends Component{
 const mapStateTopProps = (state) => {
   return {
     listStatus: state.users.getIn(['listStatus']),
+    newRecord: state.users.getIn(['newRecord']),
     records: state.users.getIn(['records']),
     record: state.users.getIn(['record']),
     pagination: state.users.getIn(['pagination']) || {},
@@ -137,6 +148,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onCreate: (record) => {
       dispatch(userActions.createUser(record));
+    },
+    onUpdate: (record) => {
+      dispatch(userActions.updateUser(record));
     }
   }
 };

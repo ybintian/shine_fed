@@ -7,7 +7,10 @@ import {
   GET_USER_FAILURE,
   CREATE_STARTED,
   CREATE_SUCCESS,
-  CREATE_FAILURE
+  CREATE_FAILURE,
+  UPDATE_STARTED,
+  UPDATE_SUCCESS,
+  UPDATE_FAILURE,
 } from 'actionTypes/userActionTypes';
 import {message} from 'antd';
 import HttpClient from 'utils/HttpClient';
@@ -54,8 +57,21 @@ export const createUserFailure = (error) => ({
   error
 })
 
+export const updateUserStarted = () => ({
+  type: UPDATE_STARTED
+});
+
+export const updateUserSuccess = (message) => ({
+  type: UPDATE_SUCCESS,
+  message
+})
+
+export const updateUserFailure = (error) => ({
+  type: UPDATE_FAILURE,
+  error
+})
+
 export const getUsers = (params) => {
-  console.info(33333, params);
   return (dispatch) => {
     const apiUrl = `/users`;
 
@@ -100,6 +116,24 @@ export const createUser = (record) => {
     }).catch((error) => {
       message.error(response.message.cnt);
       dispatch(createUserFailure(error));
+    })
+  }
+}
+
+export const updateUser = (record) => {
+  return (dispatch) => {
+    const apiUrl = `/users/${record.id}`
+    dispatch(updateUserStarted());
+    console.info(333, record);
+    return HttpClient.put(apiUrl, {user: record}).then((response) => {
+      if (response.success != true) {
+        throw new Error('Fail to get response with status ' + response.status);
+      }
+      message.success(response.message.cnt);
+      dispatch(updateUserSuccess(response.message));
+    }).catch((error) => {
+      message.error(response.message.cnt);
+      dispatch(updateUserFailure(error));
     })
   }
 }

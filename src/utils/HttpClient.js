@@ -8,7 +8,7 @@ function getJsonWebToken() {
 
 function HttpRequest(url, params = {}){
   const JsonWebToken = getJsonWebToken();
-  const requestConfig = {
+  let requestConfig = {
     method: params.method,
     url: config.host  + url,
     headers: {
@@ -18,8 +18,12 @@ function HttpRequest(url, params = {}){
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     withCredentials: false,
-    data: objectToFormData(params.data),
-    params: params.data,
+  }
+
+  if (params.method == 'get') {
+    requestConfig = Object.assign({},{params: params.data}, requestConfig)
+  } else {
+    requestConfig = Object.assign({},{data: objectToFormData(params.data),}, requestConfig)
   }
 
   return new Promise((resolve, reject) => {

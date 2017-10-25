@@ -20,7 +20,6 @@ const createForm = Form.create;
   mapPropsToFields(props) {
     const {record, action} = props;
     let initValues = {};
-    console.info(action);
     if (record && action == 'edit') {
       Object.entries(record).forEach(
         (item) => {
@@ -36,14 +35,7 @@ const createForm = Form.create;
       );
     }
     return initValues;
-  },
-  onFieldsChange(props, fields) {
-    console.log('onFieldsChange', fields);
-    props.dispatch({
-      type: 'save_fields',
-      payload: fields,
-    });
-  },
+  }
 })
 export default class UserForm extends Component{
   static propTypes = {
